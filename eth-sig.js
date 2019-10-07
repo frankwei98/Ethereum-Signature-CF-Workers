@@ -1,13 +1,19 @@
 // A JS library for recovering signatures:
 const sigUtil = require('eth-sig-util')
 
+const JsonResponse = (data, options = {}) => new Response(JSON.stringify(data), Object.assign(options, { headers: { 'Content-Type': 'application/json' } }))
+
 const recoverTypedSignature = async (request) => {
     const { data, sig } = await request.json()
-    const recoveredAddress = sigUtil.recoverTypedSignature({
-        data,
-        sig
-    })
-    return new Response({ code: 200, recoveredAddress })
+    try {
+        const recoveredAddress = sigUtil.recoverTypedSignature({
+            data,
+            sig
+        })
+        return JsonResponse({ code: 200, recoveredAddress })
+    } catch (error) {
+        return JsonResponse({ code: 400, error }, { status: 400 })
+    }
 }
 
 const checkTypedSignature = async (request) => {
@@ -17,11 +23,11 @@ const checkTypedSignature = async (request) => {
         sig
     })
     if (signer === from) {
-        return new Response({ code: 200, isCorrect: true, signer })
+        return JsonResponse({ code: 200, isCorrect: true, signer })
     } else {
-        return new Response({ code: 400, isCorrect: false, signer })
+        return JsonResponse({ code: 400, isCorrect: false, signer })
     }
 
 }
 
-export { recoverTypedSignature, checkTypedSignature }
+module.exports = { recoverTypedSignature, checkTypedSignature }

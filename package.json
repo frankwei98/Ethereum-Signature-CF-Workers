@@ -11,7 +11,7 @@
   "author": "韦海晖 <franciswei98@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "eth-sig-util": "^2.4.4",
+    "eth-sig-util": "^1.4.2",
     "prettier": "^1.18.2"
   }
 }

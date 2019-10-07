@@ -1,5 +1,5 @@
-const { recoverTypedSignature } = require('./eth-sig')
-
+const sigUtil = require('./eth-sig')
+const handleOptions = require('./cors')
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
@@ -32,8 +32,10 @@ const landing = `
  */
 async function handleRequest(request) {
   let response
-  if (request.method === 'POST') {
-    response = recoverTypedSignature(request)
+  if (request.method === "OPTIONS") {
+    return handleOptions(request)
+  } else if (request.method === 'POST') {
+    response = sigUtil.recoverTypedSignature(request)
   } else {
     response = new Response(landing, { headers: { 'Content-Type': 'text/html' } })
   }
