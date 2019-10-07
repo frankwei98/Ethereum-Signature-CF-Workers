@@ -1,0 +1,6 @@
+account_id = ""
+name = "ethereum-typed-singnature-recover-worker"
+type = "webpack"
+route = ""
+workers_dev = true
+zone_id = ""
