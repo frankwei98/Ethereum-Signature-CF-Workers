@@ -1,3 +1,4 @@
+const Router = require('./router')
 const sigUtil = require('./eth-sig')
 const handleOptions = require('./cors')
 addEventListener('fetch', event => {
@@ -14,7 +15,7 @@ const landing = `
 <script>
   function generate() {
     const data = JSON.parse(document.querySelector("#data").value)
-    fetch(window.location.pathname, {
+    fetch('/get-signer', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ 
@@ -31,13 +32,9 @@ const landing = `
  * @param {Request} request
  */
 async function handleRequest(request) {
-  let response
-  if (request.method === "OPTIONS") {
-    return handleOptions(request)
-  } else if (request.method === 'POST') {
-    response = sigUtil.recoverTypedSignature(request)
-  } else {
-    response = new Response(landing, { headers: { 'Content-Type': 'text/html' } })
-  }
-  return response
+  const r = new Router()
+  r.options('/get-signer', handleOptions)
+  r.get('/', () => new Response(landing, { headers: { 'Content-Type': 'text/html' } }))
+  r.post('/get-signer', sigUtil.recoverTypedSignature)
+  return r.route(request)
 }
