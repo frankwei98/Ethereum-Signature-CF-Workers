@@ -1,5 +1,0 @@
-account_id = "***REMOVED***"
-name = "ethereum-typed-singnature-recover-worker"
-type = "webpack"
-route = ""
-workers_dev = true
