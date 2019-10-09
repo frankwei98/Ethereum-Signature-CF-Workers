@@ -1,7 +1,15 @@
 // A JS library for recovering signatures:
 const sigUtil = require('eth-sig-util')
+const { corsHeaders } = require('./cors')
 
-const JsonResponse = (data, options = {}) => new Response(JSON.stringify(data), Object.assign(options, { headers: { 'Content-Type': 'application/json' } }))
+const JsonResponse = (data, options = {}) => {
+    let resp = new Response(
+        JSON.stringify(data),
+        Object.assign(options, { headers: { 'Content-Type': 'application/json', ...corsHeaders } })
+    )
+    
+    return resp
+}
 
 const recoverTypedSignature = async (request) => {
     const { data, sig } = await request.json()

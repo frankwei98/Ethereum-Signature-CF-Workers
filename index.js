@@ -1,6 +1,6 @@
 const Router = require('./router')
 const sigUtil = require('./eth-sig')
-const handleOptions = require('./cors')
+const { handleOptions } = require('./cors')
 addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })

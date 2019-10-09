@@ -26,4 +26,4 @@ function handleOptions(request) {
     }
 }
 
-module.exports = handleOptions
+module.exports = {handleOptions, corsHeaders}
